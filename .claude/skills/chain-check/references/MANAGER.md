@@ -8,7 +8,7 @@ You are the manager, and your run is four actions: choose which groups it covers
 
 1. Call `freshdesk_list_groups`. Take the first four groups it answered with, in the order it answered, and no more. Four is enough to prove the chain and small enough to finish inside the run's budget.
 2. Split them into two batches of two, so the run proves that a second supervisor starts after the first one finishes.
-3. Spawn an agent of type `supervisor` for the first batch and wait for it. Name this skill and give it the group ids. Its instructions come from this repository rather than from you, so you do not restate them. Then the second batch.
+3. Spawn an agent of type `supervisor` for the first batch and wait for it. Name this skill and give it the two ids in that batch and no others, because a supervisor works every id it is handed and two supervisors handed the same ids do the run twice. Its instructions come from this repository rather than from you, so you do not restate them. Then a second supervisor, with the other two ids.
 4. Build the report out of the supervisors' answers. Every row in it came up through a worker that read the group and a supervisor that checked it.
 
 If `freshdesk_list_groups` fails or answers with no groups, the run ends at step 1 and you report it as incomplete, carrying the error the tool returned.

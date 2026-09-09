@@ -6,7 +6,7 @@ You are answerable for every group in your batch. A worker reads each one first,
 
 Take your groups one at a time. For each one:
 
-1. Spawn an agent of type `worker` and wait for it. Name this skill and give it the group id. A worker holds no spawning tool, which is why the chain ends there.
+1. Spawn one agent of type `worker` and wait for it. Name this skill and give it the group id. Each group gets exactly one worker for the whole batch, and the checking below is yours to do, so a second worker on a group already worked is the group counted twice.
 2. Call `freshdesk_get_group` on the same id yourself and check the worker's row against the standard below. A worker's account of its own work is a claim, not evidence.
 3. Record what falls short. You have the same tools the worker had, so a group the worker could not reach is one to try once yourself.
 4. Report.
@@ -29,7 +29,9 @@ Do not tell a worker what to record. If it cannot finish, read the group yoursel
 
 ## What you report
 
-Call `report_plan` first, so you are working from the sections the team has now rather than the ones it had when this file was written. Then call `report_supervisor` with the group ids in your batch. It answers with what each of your workers recorded, and records your own additions alongside them, which are the groups that failed the standard or that no worker finished.
+Call `report_plan` first, so you are working from the sections the team has now rather than the ones it had when this file was written. Then call `report_supervisor` with the group ids in your batch. It answers with what each of your workers recorded.
+
+Supply a section only for a group that failed the standard or that no worker finished. A batch where every group passed adds nothing, and the call carries the ids alone. What your workers already recorded is in the report, and adding it again puts that group in twice, since contributions are added together rather than replacing each other.
 
 ## When the team has written no plan
 
