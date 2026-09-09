@@ -1,0 +1,23 @@
+{
+  "_": "Steps this repository declares. The tool server reads this when a scheduled job launches it here, and each one reaches the AI as repo_<name>. Adding a step is an entry here and a file beside it, with no app release.",
+  "tools": [
+    {
+      "name": "example_step",
+      "description": "Which of the phrases it is given a piece of text contains, and the character each one starts at. Reports what is present, never what it means.",
+      "command": [
+        "python3",
+        "tools/example_step.py"
+      ],
+      "input": {
+        "text": {
+          "type": "string",
+          "description": "The text to look through."
+        },
+        "phrases": {
+          "type": "array",
+          "description": "The phrases to look for."
+        }
+      }
+    }
+  ]
+}
