@@ -12,13 +12,13 @@ Call `report_plan` first if you do not already know what this job collects. It n
 
 ## What you report
 
-Call `report_plan` first, every run. The team edits its sections in the app, so they change without this file changing, and what that tool returns is the only current description of them. It names every section, says what belongs in each, and gives the argument each is supplied under.
+Call `report_plan` first, every run. The team edits its sections in the app, so they change without this file changing, and what that tool returns is the only current description of them.
 
-Then call `report_worker` with the group id as `item`, and fill every section your group has something for. What you hold is the group's id, the name and description `freshdesk_get_group` answered with, and which of the phrases the step found and where each starts. Read each section's own description and put in what it asks for. Leave out a section your group says nothing about.
+Then call `report_worker` with the group id as `item` and fill in the blanks it gives you. There is one report per group and the tool holds the fields, so you are filling in a form rather than composing anything. What you hold is the group's id, the name and description `freshdesk_get_group` answered with, and which of the phrases the step found and where each starts. Read each section's own description and fill in what it asks for.
 
-Nothing in your reply reaches the report, so anything left out of that call is a fact nobody gets.
+Nothing in your reply reaches the report, so anything left blank is a fact nobody gets.
 
-If either call fails, the group goes into whichever section `report_plan` describes as covering work a person has to pick up, carrying the error the tool returned, and that section is the only one it appears in.
+If either call fails, fill in whichever section `report_plan` describes as covering work a person has to pick up, carrying the error the tool returned.
 
 ## When the team has written no plan
 
