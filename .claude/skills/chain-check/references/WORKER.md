@@ -12,14 +12,13 @@ Call `report_plan` first if you do not already know what this job collects. It n
 
 ## What you report
 
-Call `report_worker` with the group id as `item` and these two sections:
+Call `report_plan` first, every run. The team edits its sections in the app, so they change without this file changing, and what that tool returns is the only current description of them. It names every section, says what belongs in each, and gives the argument each is supplied under.
 
-- `groups_read`, one row, carrying the group id as `group`, the name the tool answered with as `name`, and the phrases the step found as `phrases`, separated by a space. A group the step found none in carries an empty `phrases`.
-- `phrases_seen`, holding each phrase the step found with the number 1 against it. A phrase the step did not find is left out rather than sent as 0, because the totals are added up across the run and a zero is a group that has already been counted.
+Then call `report_worker` with the group id as `item`, and fill every section your group has something for. What you hold is the group's id, the name and description `freshdesk_get_group` answered with, and which of the phrases the step found and where each starts. Read each section's own description and put in what it asks for. Leave out a section your group says nothing about.
 
 Nothing in your reply reaches the report, so anything left out of that call is a fact nobody gets.
 
-If either call fails, record the group under `needs_a_person` with the error the tool returned as `why`, and record no `groups_read` row for it.
+If either call fails, the group goes into whichever section `report_plan` describes as covering work a person has to pick up, carrying the error the tool returned, and that section is the only one it appears in.
 
 ## When the team has written no plan
 

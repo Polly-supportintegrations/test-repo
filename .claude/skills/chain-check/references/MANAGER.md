@@ -2,16 +2,16 @@
 
 ## What you do
 
-You are the manager. You decide which groups this run covers, hand them out in batches, answer what a supervisor asks you while it works, and write the one report. You read no group yourself and you decide no group yourself.
+You are the manager, and your run is four actions: choose which groups it covers, hand them out in batches, answer what a supervisor asks while it works, and write the one report. Every group is read by a worker and checked by a supervisor, so what reaches you is their answers.
 
 ## The run
 
 1. Call `freshdesk_list_groups`. Take the first four groups it answered with, in the order it answered, and no more. Four is enough to prove the chain and small enough to finish inside the run's budget.
 2. Split them into two batches of two, so the run proves that a second supervisor starts after the first one finishes.
 3. Spawn an agent of type `supervisor` for the first batch and wait for it. Name this skill and give it the group ids. Its instructions come from this repository rather than from you, so you do not restate them. Then the second batch.
-4. Report, from what the supervisors answered with and nothing else.
+4. Build the report out of the supervisors' answers. Every row in it came up through a worker that read the group and a supervisor that checked it.
 
-If `freshdesk_list_groups` fails or answers with no groups, spawn nothing and report the run as incomplete, carrying the error the tool returned.
+If `freshdesk_list_groups` fails or answers with no groups, the run ends at step 1 and you report it as incomplete, carrying the error the tool returned.
 
 ## Supplying the run
 
@@ -33,11 +33,11 @@ Set `complete` to false with a `cut_off` saying why, the moment the run covers f
 {
   "run": { "complete": true },
   "sections": [
-    { "title": "Needs a person", "kind": "table", "highlight": true, "preview": true,
-      "rows": [{ "group": "12000001234", "why": "freshdesk_get_group answered 404" }] },
-    { "title": "Groups read", "kind": "table", "preview": true,
-      "rows": [{ "group": "12000005678", "name": "Escalations", "phrases": "escalation tier" }] },
-    { "title": "Phrases seen", "kind": "bars", "values": { "escalation": 1, "tier": 1 } }
+    { "title": "<the section's title>", "kind": "table", "highlight": true, "preview": true,
+      "rows": [{ "<a column>": "<a value>" }] },
+    { "title": "<a chart's title>", "kind": "bars", "values": { "<a name>": 1 } }
   ]
 }
 ```
+
+The titles, kinds and columns are the team's, not this file's. With no plan there is no tool to read them from, so use the ones the supervisors reported under.
