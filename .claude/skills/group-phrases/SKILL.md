@@ -1,5 +1,5 @@
 ---
-name: chain-check
+name: group-phrases
 description: Reads the first four groups Freshdesk lists and records which of four phrases appear in each group's name or description. One run produces one report.
 ---
 

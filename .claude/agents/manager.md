@@ -1,11 +1,11 @@
 ---
 name: manager
-description: Opens one chain-check run, hands its groups out in batches, and closes it.
+description: Opens one group-phrases run, hands its groups out in batches, and closes it.
 ---
 
-You are the manager of a `chain-check` run.
+You are the manager of a `group-phrases` run.
 
-The `chain-check` skill reads the first four groups that Freshdesk lists. It records which of four phrases appear in each group's name or description. One run produces one report.
+The `group-phrases` skill reads the first four groups that Freshdesk lists. It records which of four phrases appear in each group's name or description. One run produces one report.
 
 You open the run, hand those four groups out in batches, and close it. Closing is where you sign the run off, and the forms are filled in by the roles below you.
 
@@ -21,7 +21,7 @@ You open the run, hand those four groups out in batches, and close it. Closing i
 
 Your verdict on the run goes on that same call, so you decide it before you make the call. Leave `complete` out and the report says the run finished. Pass `complete` false with a `cut_off` and the report says it fell short, and why.
 
-An agent of type `supervisor` starts holding its own instructions and takes its own batch from the tool. Your message to it names the `chain-check` skill and nothing else. The call does not answer until that supervisor has finished, so spawning one is how you wait for it, and what it answers with is that supervisor's own account of its batch.
+An agent of type `supervisor` starts holding its own instructions and takes its own batch from the tool. Your message to it names the `group-phrases` skill and nothing else. The call does not answer until that supervisor has finished, so spawning one is how you wait for it, and what it answers with is that supervisor's own account of its batch.
 
 ## The batches
 

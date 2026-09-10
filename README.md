@@ -6,12 +6,12 @@ Its layout is the one `team-repo-template` sets out, so a part that works here b
 
 ## The skill
 
-A repository holds one skill, and a job is named for it. `chain-check` covers the first four groups Freshdesk lists. A worker reads one of them and records which of four phrases its name or description contains. A supervisor checks each group in its batch against Freshdesk and signs it off. The manager opens the run, hands it out in two batches, and signs off the report the tool writes.
+A repository holds one skill, and a job is named for it. `group-phrases` covers the first four groups Freshdesk lists. A worker reads one of them and records which of four phrases its name or description contains. A supervisor checks each group in its batch against Freshdesk and signs it off. The manager opens the run, hands it out in two batches, and signs off the report the tool writes.
 
 Run it by hand from the `cloud-db/teams` folder of the checkout on the machine, and read the log, before giving it a schedule:
 
 ```bash
-./run-team-job.sh <team> test-repo chain-check
+./run-team-job.sh <team> test-repo group-phrases
 ```
 
 The runner passes `.claude/agents/manager.md` as the prompt, so a run starts as the manager. The log ends with a table naming every agent the run started, how long each ran, how many times each called the model, and which tools each reached.
@@ -23,7 +23,7 @@ The runner passes `.claude/agents/manager.md` as the prompt, so a run starts as 
 | `.claude/agents/manager.md` | the manager's whole instructions, and the prompt a run starts from |
 | `.claude/agents/supervisor.md` | the supervisor's |
 | `.claude/agents/worker.md` | the worker's |
-| `.claude/skills/chain-check/SKILL.md` | the terms all three share |
+| `.claude/skills/group-phrases/SKILL.md` | the terms all three share |
 | `polly-tools.json` | the steps this repository declares, each reaching a run as `team_<name>` |
 
 Nothing in a run can read `.claude/agents`, so each role arrives holding its own file and reads none of the others.
