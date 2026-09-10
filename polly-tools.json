@@ -1,5 +1,5 @@
 {
-  "_": "Steps this repository declares. The tool server reads this when a scheduled job launches it here, and each one reaches the AI as repo_<name>. Adding a step is an entry here and a file beside it, with no app release.",
+  "_": "Steps this repository declares. The tool server reads this when a scheduled job launches it here, and each one reaches the AI as team_<name>. Adding a step is an entry here and a file beside it, with no app release.",
   "tools": [
     {
       "name": "example_step",

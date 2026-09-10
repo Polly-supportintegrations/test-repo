@@ -1,25 +1,37 @@
 # Test repo
 
-The repository a team machine runs against to prove a scheduled job works end to end. Nothing in it changes anything: every call either job makes is a read, so it can be pointed at a live Freshdesk and run again as often as it takes.
+The repository a team machine runs a scheduled job against, to see the whole path work end to end. Every call a run makes is a read, so it can be pointed at a live Freshdesk and run as often as it takes.
 
-Its layout is the one `team-repo-template` sets out, so a part proven here behaves the same way in a team's own repository.
+Its layout is the one `team-repo-template` sets out, so a part that works here behaves the same way in a team's own repository.
 
-## The two jobs
+## The skill
 
-| Job | What one run proves |
-|---|---|
-| `freshdesk-check` | The schedule fires, the tool server answers, the Freshdesk credential works, and the output reaches the team log. One agent, one line of output, and no report. |
-| `chain-check` | A run spawns a supervisor, a supervisor spawns a worker, a worker reaches both an MCP tool and a repository tool, and all three record into one report the manager writes without reading a single group. |
+A repository holds one skill, and a job is named for it. `chain-check` covers the first four groups Freshdesk lists. A worker reads one of them and records which of four phrases its name or description contains. A supervisor checks each group in its batch against Freshdesk and signs it off. The manager opens the run, hands it out in two batches, and signs off the report the tool writes.
 
-Run either by hand from the `cloud-db/teams` folder of the checkout on the machine, and read the log, before giving it a schedule:
+Run it by hand from the `cloud-db/teams` folder of the checkout on the machine, and read the log, before giving it a schedule:
 
 ```bash
 ./run-team-job.sh <team> test-repo chain-check
 ```
 
-## What chain-check needs before it can report
+The runner passes `.claude/agents/manager.md` as the prompt, so a run starts as the manager. The log ends with a table naming every agent the run started, how long each ran, how many times each called the model, and which tools each reached.
 
-The four report tools come from the report plan the team wrote for that job, and a job with no plan gets none of them. The plan is `report-plans.json` at the root of the team's folder, beside `cron.json`, and the Build Report tab in the app writes it. For this job it holds three sections, and the role files under `.claude/skills/chain-check/references/` say what goes in each:
+## Where everything lives
+
+| File | Holds |
+|---|---|
+| `.claude/agents/manager.md` | the manager's whole instructions, and the prompt a run starts from |
+| `.claude/agents/supervisor.md` | the supervisor's |
+| `.claude/agents/worker.md` | the worker's |
+| `.claude/skills/chain-check/SKILL.md` | the terms all three share |
+| `.claude/skills/chain-check/references/phrases.md` | the four phrases |
+| `polly-tools.json` | the steps this repository declares, each reaching a run as `team_<name>` |
+
+Nothing in a run can read `.claude/agents`, so each role arrives holding its own file and reads none of the others.
+
+## What a run needs before it can report
+
+Its report tools come from the report plan the team wrote for this skill, and a run with no plan gets none of them. The plan is `report-plans.json` at the root of the team's folder, beside `cron.json`, and the Build Report tab in the app writes it. This skill's plan holds three sections:
 
 | Section | Kind | Columns |
 |---|---|---|
@@ -27,13 +39,13 @@ The four report tools come from the report plan the team wrote for that job, and
 | Groups read | table, listed in the app | `group`, `name`, `phrases` |
 | Phrases seen | bars | |
 
-Without a plan the run still finishes. The manager writes the report as a fenced `json` block at the end of its reply instead, and the app reads it out of the log, which is the other half of the pipeline worth proving.
+The agent definitions say what each role puts in them.
 
-## Proving the chain refuses what it should
+## The chain of command
 
-A run writes every refused spawn to `chain-violations.log` in the team's folder, so a clean run leaves that file untouched or absent. To see the hook refuse something, ask a worker in `prompts/chain-check.txt` to spawn a supervisor: the worker holds no spawning tool at all, and a supervisor asked to spawn another supervisor is refused by the hook and named in that file.
+A run refuses any spawn outside the chain, and any read of `.claude/agents`, and writes each refusal to `chain-violations.log` in the team's folder. A clean run leaves that file absent.
 
-## Before scheduling either one
+## Before scheduling it
 
 ```bash
 python3 tools/run_tests.py
