@@ -7,10 +7,6 @@ description: Reads the first four groups Freshdesk lists and records which of fo
 
 One run reads the first four groups that Freshdesk lists, out of however many the workspace holds. It records which of four phrases appear in each group's name or description. Three roles share that work, and they share the phrases and the terms below.
 
-## The phrases
-
-@references/phrases.md
-
 ## Terms
 
 *Report plan*: the sections the finished report is made of, and what belongs in each. The team writes it in the app, and it changes without any file here changing, so the tool that answers with it is where the current one is.

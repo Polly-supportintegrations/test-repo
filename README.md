@@ -24,7 +24,6 @@ The runner passes `.claude/agents/manager.md` as the prompt, so a run starts as 
 | `.claude/agents/supervisor.md` | the supervisor's |
 | `.claude/agents/worker.md` | the worker's |
 | `.claude/skills/chain-check/SKILL.md` | the terms all three share |
-| `.claude/skills/chain-check/references/phrases.md` | the four phrases |
 | `polly-tools.json` | the steps this repository declares, each reaching a run as `team_<name>` |
 
 Nothing in a run can read `.claude/agents`, so each role arrives holding its own file and reads none of the others.
