@@ -36,7 +36,15 @@ One of the sections `standalone_report_plan` describes covers work a person has 
 
 ## The steps
 
-1. Call `standalone_report_plan`.
-2. Call `freshdesk_get_group` with your group's id.
-3. Call `team_example_step`, with `text` set to the group's name and description run together, and `phrases` set to the four above.
-4. Call `standalone_report_worker`, with `item` set to your group's id and every section you can fill in.
+1. Your tools are not in front of you when you start, only their names. Load them with
+   `ToolSearch`, in one call, before anything else:
+
+   ```
+   select:mcp__polly-cs-tools__standalone_report_plan,mcp__polly-cs-tools__freshdesk_get_group,mcp__polly-cs-tools__team_example_step,mcp__polly-cs-tools__standalone_report_worker
+   ```
+
+   A tool that does not come back is one to name in your reply before you stop.
+2. Call `standalone_report_plan`.
+3. Call `freshdesk_get_group` with your group's id.
+4. Call `team_example_step`, with `text` set to the group's name and description run together, and `phrases` set to the four above.
+5. Call `standalone_report_worker`, with `item` set to your group's id and every section you can fill in.

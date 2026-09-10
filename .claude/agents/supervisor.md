@@ -47,9 +47,17 @@ Signing off is your judgment. Sign off a group that meets the standard as it sta
 
 ## The steps
 
-1. Call `standalone_report_supervisor` with no `batch`. What it answers with is your batch.
-2. Call `standalone_report_plan`.
-3. Take your groups one at a time. For each one:
+1. Your tools are not in front of you when you start, only their names. Load them with
+   `ToolSearch`, in one call, before anything else:
+
+   ```
+   select:mcp__polly-cs-tools__standalone_report_supervisor,mcp__polly-cs-tools__standalone_report_plan,mcp__polly-cs-tools__freshdesk_get_group
+   ```
+
+   A tool that does not come back is one to name in your reply before you stop.
+2. Call `standalone_report_supervisor` with no `batch`. What it answers with is your batch.
+3. Call `standalone_report_plan`.
+4. Take your groups one at a time. For each one:
    1. Spawn a `worker` with that group's id.
    2. Call `standalone_report_supervisor` with `batch` set and no `item`, to see the form that worker left.
    3. Call `freshdesk_get_group` on that id yourself.

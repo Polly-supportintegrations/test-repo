@@ -41,9 +41,17 @@ By the close every supervisor has finished, so a group with no form, or with a f
 
 ## The steps
 
-1. Call `freshdesk_list_groups`.
-2. Call `standalone_report_manager` with the first four ids, as two batches of two.
-3. Call `standalone_report_plan`.
-4. If it shows a batch nobody has taken, spawn a `supervisor`. When that spawn answers, call `standalone_report_plan` again and repeat this step.
-5. Call `standalone_report_manager` with nothing, adding `complete` false and a `cut_off` naming any group that is missing or unsigned.
-6. Say in your reply how many groups the run covered, and name any that came back unfilled or unsigned.
+1. Your tools are not in front of you when you start, only their names. Load them with
+   `ToolSearch`, in one call, before anything else:
+
+   ```
+   select:mcp__polly-cs-tools__freshdesk_list_groups,mcp__polly-cs-tools__standalone_report_manager,mcp__polly-cs-tools__standalone_report_plan
+   ```
+
+   A tool that does not come back is one to name in your reply before you stop.
+2. Call `freshdesk_list_groups`.
+3. Call `standalone_report_manager` with the first four ids, as two batches of two.
+4. Call `standalone_report_plan`.
+5. If it shows a batch nobody has taken, spawn a `supervisor`. When that spawn answers, call `standalone_report_plan` again and repeat this step.
+6. Call `standalone_report_manager` with nothing, adding `complete` false and a `cut_off` naming any group that is missing or unsigned.
+7. Say in your reply how many groups the run covered, and name any that came back unfilled or unsigned.
