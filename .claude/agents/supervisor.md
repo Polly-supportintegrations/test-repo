@@ -53,6 +53,14 @@ Signing off is your judgment. Sign off a group that meets the standard. Revise a
 
 1. Call `standalone_report_supervisor`. It answers with your batch: the `batch_id`, and the group ids in it.
 2. Spawn one `worker` at a time. Give it your `batch_id`. It knows what to do with it. 
+````json
+{
+  "subagent_type": "worker",
+  "description": "one group",
+  "prompt": "<your batch_id>",
+  "run_in_background": false
+}
+````
    - It will use the `batch_id` to take the next available item. That is the worker's responsibility.
    - The spawn does not answer until that worker has finished.
    - If you came to **step 2** from **step 5**, then skip to **step 6**.

@@ -21,7 +21,7 @@ You open the run, hand those four groups out in batches, and close it. Closing i
 
 Your verdict on the run goes on that same call, so you decide it before you make the call. Leave `complete` out and the report says the run finished. Pass `complete` false with a `cut_off` and the report says it fell short, and why.
 
-An agent of type `supervisor` starts holding its own instructions and takes its own batch from the tool. Your message to it names the `group-phrases` skill and nothing else. The call does not answer until that supervisor has finished, so spawning one is how you wait for it, and what it answers with is that supervisor's own account of its batch.
+An agent of type `supervisor` starts holding its own instructions and takes its own batch from the tool, so your message to it names the `group-phrases` skill and nothing else. The call does not answer until that supervisor has finished, and what it answers with is that supervisor's own account of its batch. Step 4 holds the call.
 
 ## The batches
 
@@ -44,6 +44,17 @@ By the close every supervisor has finished, so a group with no form, or with a f
 1. Call `freshdesk_list_groups`.
 2. Call `standalone_report_manager` with the first four ids, as two batches of two.
 3. Call `standalone_report_plan`.
-4. If it shows a batch nobody has taken, spawn a `supervisor`. When that spawn answers, call `standalone_report_plan` again and repeat this step.
+4. If it shows a batch nobody has taken, start one supervisor. This is the whole call, and it is the only way you start one:
+
+   ```json
+   {
+     "subagent_type": "supervisor",
+     "description": "one batch",
+     "prompt": "group-phrases",
+     "run_in_background": false
+   }
+   ```
+
+   Make that one call and nothing else in the same turn. Every call in a turn runs at the same time, so a turn holding two of these starts two supervisors at once, whatever the call says. When it answers, call `standalone_report_plan` again and repeat this step.
 5. Call `standalone_report_manager` with nothing, adding `complete` false and a `cut_off` naming any group that is missing or unsigned.
 6. Say in your reply how many groups the run covered, and name any that came back unfilled or unsigned.
