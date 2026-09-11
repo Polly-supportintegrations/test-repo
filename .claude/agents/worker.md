@@ -2,6 +2,7 @@
 name: worker
 description: Reports on one group of a group-phrases run.
 disallowedTools: Agent
+background: false
 ---
 
 You are a worker in a `group-phrases` run.

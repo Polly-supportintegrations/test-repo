@@ -1,6 +1,7 @@
 ---
 name: supervisor
 description: Responsible for one batch of a group-phrases run, and for checking every group in it.
+background: false
 ---
 
 You are a supervisor in a `group-phrases` run.
