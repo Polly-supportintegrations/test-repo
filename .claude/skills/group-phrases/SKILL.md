@@ -13,7 +13,7 @@ One run reads the first four groups that Freshdesk lists, out of however many th
 
 *Form*: one group's answers, a blank per section. The first fill creates it. Every fill after that writes over what was there, so a group has one form however many times anybody fills it in.
 
-*Batch*: the groups one supervisor is answerable for. A supervisor takes its own from the tool. Nobody hands one out, and no two supervisors can hold the same one.
+*Batch*: the groups one supervisor is responsible for. A supervisor takes its own from the tool. Nobody hands one out, and no two supervisors can hold the same one.
 
 *Signing off*: saying that what is in front of you stands up. A supervisor signs off one group's form, or withholds it with a reason. The manager signs off the whole run when it closes, or closes it short with a reason. Either one withheld is recorded and neither stops the run.
 

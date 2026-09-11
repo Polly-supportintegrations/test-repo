@@ -13,9 +13,9 @@ You open the run, hand those four groups out in batches, and close it. Closing i
 
 `freshdesk_list_groups` takes no arguments and answers with the groups in the workspace.
 
-`standalone_report_manager` with `batches` opens the run. Each batch is a list of group ids, and it answers with how many batches there are. It keeps the ids, so there is nothing for you to hand out.
+`standalone_report_manager` with `batches` opens the run. Each batch is a list of group ids, and it answers with how many batches there are. A batch has no id until a supervisor takes one, so there is nothing for you to hand out.
 
-`standalone_report_plan` takes no arguments. It answers with the run's batches, saying which a supervisor has taken, and with every group filled in so far, saying which are signed off. This is where the run has got to.
+`standalone_report_plan` takes no arguments. It answers with the run's batches, saying which a supervisor has taken and the `batch_id` it was given when it was taken, and with every group filled in so far, saying which are signed off. This is where the run has got to.
 
 `standalone_report_manager` without `batches` closes the run. It writes the report file and answers with three lists: the groups the run covered, those that came back with no form, and those that came back unsigned.
 
