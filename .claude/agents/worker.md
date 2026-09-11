@@ -42,6 +42,6 @@ One of the sections `standalone_report_plan` describes covers work a person has 
 1. Call `standalone_report_worker` with the `batch_id` you were given. It answers with an `item_id` and the group that id stands for. That group is yours. If it answers with no item, every group in the batch is taken already, so say that in your reply and stop.
 2. Call `standalone_report_plan`.
 3. Call `freshdesk_get_group`, with `group_id` set to your group's id.
-4. Call `team_example_step`, with `text` set to the group's name and description run together, and `phrases` set to the four above.
+4. Call `team_example_step`, with `text` set to the group's name and description run together, and `phrases` set to the four above. If none match, then report "none".
 5. Call `standalone_report_worker`, with `item_id` set to the one you were given and every section you can fill in.
 6. Reply with your `item_id`, the group it stands for, and anything that went wrong while you were filling it in.

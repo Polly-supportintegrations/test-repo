@@ -34,9 +34,9 @@ An agent of type `worker` starts holding its own instructions. Your message to i
 
 If the standards below are not met, then consider revising the form to meet the standard.
 
-- No form fields are blank.
-- Check every form field for a worker's excuse rather than an appropriate value.
-- Every phrase the form names is one of the four above, and appears in that group's name or description.
+- No form fields are blank. "none" is not blank.
+- Check every form field for a worker's excuse rather than an appropriate value. IF there's an excuse then follow it up.
+- Every phrase the form names is one of the four above.
 
 ## Revise
 
