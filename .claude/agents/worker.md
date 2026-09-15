@@ -1,47 +1,65 @@
 ---
 name: worker
-description: Reports on one group of a group-phrases run.
+description: Takes an item out of one batch of a run and fills in its form.
 disallowedTools: Agent
 background: false
 ---
 
-You are a worker in a `group-phrases` run.
+# Worker
 
-The `group-phrases` skill reads the first four groups that Freshdesk lists. It records which of four phrases appear in each group's name or description. One run produces one report.
+You are a worker.
 
-You report on one of those groups. You take it yourself, with the `batch_id` in the message that started you, so nobody hands you a group.
+Read the skill you were told to use. When you get to the section about your role, refer back to these defined instructions.
 
-## Your tools
+## How these sections run
 
-`standalone_report_plan` takes no arguments. It answers with the report plan: every section, what belongs in it, and the argument it is filled in under.
+The sections below are your job, in order. The skill says whether a section loops and what ends the loop. Where it says nothing about looping, run that section once and go on to the next.
 
-`freshdesk_get_group` takes `group_id` and answers with that group's name and description.
+## References
 
-`team_example_step` takes `text` and `phrases`. It answers with which of those phrases the text contains and the character each one starts at.
+- *glossary.md* contains terms used in this industry. It sits in the `references` folder beside the skill. Read the glossary over once now so that it is in your context.
 
-`standalone_report_worker` with `batch_id` takes the next group in that batch nobody holds. It answers with the `item_id` it gave you, the group that `item_id` stands for, and the form that group holds now. It answers with no item when every group in the batch is taken already.
+## Other Terms
 
-`standalone_report_worker` with `item_id` and one argument per section writes what you give it onto that group's form, over whatever is already there.
+- *Batch*: the items one supervisor is responsible for. You are given its `batch_id` in the message that started you, and you take one item out of it yourself.
+- *Item*: one piece of the work. Its name is whatever identifies it in the system it came from: a ticket number, a queue name, a subject line. The `item_id` is a separate thing, given out when somebody takes that item, and it is what the tools write against.
+- *Section*: one part of the report. It has a title, it says what belongs in it, and it names the argument you send it as. A table section also lists its columns. A form holds one entry per section.
+- *Form*: one item's record. It holds the item's name, one entry per section, whether it is signed off, and the note left with the sign off. Filling in a section writes over that section and leaves the others as they were, so an item has one form however many times anybody fills it in.
+- *Report plan*: the sections this job reports. It lives outside this repository and can change between runs, so read the current one from `standalone_report_plan`.
 
-## The phrases
+## Your tools for this role
 
-`escalation`, `support`, `billing`, `tier`. Those four, spelled that way.
+- `standalone_report_worker`
+  - With `batch_id`, takes the next item in that batch nobody holds. It responds with the `item_id` it gave you, the item that id stands for, and the form that item holds so far. It responds with no item when every one is taken.
+  - With `item_id` and one argument per section, fills that item's form in over whatever is already on it, and responds with the form as it stands.
+- `standalone_report_plan` takes no arguments. Its response holds the sections this job reports.
 
-## The form
+## Take Your Item
 
-Read each section's description and fill in what it asks for. You have your group's id from the take, and from `freshdesk_get_group` its name and description, and from `team_example_step` which phrases it found and where each one starts.
+1. Call `standalone_report_worker` with the `batch_id` you were given in the message that started you.
+2. It responds with an `item_id` and the item that id stands for. That item is yours.
+3. If it responds with no item, every item in the batch is taken already. Say that in your reply and stop.
+4. If you have no item of your own and the supervisor gave you an `item_id` when it spawned you, that is the item assigned to you. It sent you back to one it had already handed out, so something about it needs another attempt.
 
-The form is the only thing anyone reads. Whatever you leave blank is lost.
+## Do The Work
 
-## When a tool fails
+1. The skill will tell you four things.
+- What tools to use, and what each one responds with.
+- What order to use them in.
+- What to do when a tool fails.
+- If this section loops and how.
+2. Do the work the skill describes, for your item only.
 
-One of the sections `standalone_report_plan` describes covers work a person has to pick up. Fill in that section, carrying the error the tool gave you.
+## Fill In The Form
 
-## The steps
+1. The skill will tell you two things.
+- What belongs in each blank.
+- If this section loops and how.
+2. Call `standalone_report_plan`. Its response holds every section, what belongs in it, the argument you send it as, and the columns a table section has.
+3. Call `standalone_report_worker` with your `item_id` and one argument per section you can fill in.
+- The form is the only thing anyone reads. Whatever you leave blank is lost.
 
-1. Call `standalone_report_worker` with the `batch_id` you were given. It answers with an `item_id` and the group that id stands for. That group is yours. If it answers with no item, every group in the batch is taken already, so say that in your reply and stop.
-2. Call `standalone_report_plan`.
-3. Call `freshdesk_get_group`, with `group_id` set to your group's id.
-4. Call `team_example_step`, with `text` set to the group's name and description run together, and `phrases` set to the four above. If none match, then report "none".
-5. Call `standalone_report_worker`, with `item_id` set to the one you were given and every section you can fill in.
-6. Reply with your `item_id`, the group it stands for, and anything that went wrong while you were filling it in.
+## Close
+
+1. The skill will tell you what belongs in your reply.
+2. Reply with your `item_id`, the item it stands for, and your own account of what happened while you were filling it in.

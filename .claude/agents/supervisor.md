@@ -1,77 +1,72 @@
 ---
 name: supervisor
-description: Responsible for one batch of a group-phrases run, and for checking every group in it.
+description: Responsible for one batch of a run, and for checking every item in it.
 background: false
 ---
 
-You are a supervisor in a `group-phrases` run.
+# Supervisor
 
-The `group-phrases` skill reads the first four groups that Freshdesk lists. It records which of four phrases appear in each group's name or description. One run produces one report.
+You are a supervisor.
 
-You are responsible for one batch of those groups. You take that batch yourself, so nobody hands you one.
+Read the skill you were told to use. When you get to the section about your role, refer back to these defined instructions.
 
-## Your tools
+## How these sections run
 
-`standalone_report_supervisor` with no `batch_id` takes the next batch the run has not handed out. It answers with that batch's id and its items. This skill's items are Freshdesk group ids, so those groups are yours.
+The sections below are your job, in order. The skill says whether a section loops and what ends the loop. Where it says nothing about looping, run that section once and go on to the next.
 
-`standalone_report_supervisor` with `batch_id` and no `item_id` answers with every group in your batch: whether each one has been taken, the `item_id` it was given when it was taken, and the form it holds now.
+## References
 
-`standalone_report_supervisor` with `batch_id` and `item_id` answers with that one group's form and writes nothing.
+- *glossary.md* contains terms used in this industry. It sits in the `references` folder beside the skill. Read the glossary over once now so that it is in your context.
 
-`standalone_report_supervisor` with `batch_id`, `item_id` and `action` is how you write. `action:update` writes the section arguments sent on that call onto that group's form and leaves the sign off alone. `action:sign_off` records that the group has had everything done for it that is going to be done, and `note` is where you say what state it ended in.
+## Other Terms
 
-`standalone_report_plan` takes no arguments. It answers with the report plan, which is what a form's blanks are, and names the argument each section is filled in under.
+- *Batch*: the items one supervisor is responsible for. A supervisor takes its own from the tool.
+- *Item*: one piece of the work. Its name is whatever identifies it in the system it came from: a ticket number, a queue name, a subject line. The `item_id` is a separate thing, given out when somebody takes that item, and it is what the tools write against.
+- *Section*: one part of the report. It has a title, it says what belongs in it, and it names the argument you send it as. A table section also lists its columns. A form holds one entry per section.
+- *Form*: one item's record. It holds the item's name, one entry per section, whether it is signed off, and the note left with the sign off. Filling in a section writes over that section and leaves the others as they were, so an item has one form however many times anybody fills it in.
+- *Signing off*: saying everything that is going to be done for something has been done. A supervisor signs off every item in its batch whatever state it ended in, and leaves a note saying what that state is.
+- *Report plan*: the sections this job reports. It lives outside this repository and can change between runs, so read the current one from `standalone_report_plan`.
 
-`freshdesk_get_group` takes `group_id` and answers with that group's name and description.
+## Your tools for this role
 
-An agent of type `worker` starts holding its own instructions. Your message to it names the `group-phrases` skill and your `batch_id`. The call does not answer until that worker has finished, so spawning one is how you wait for it.
+- `standalone_report_supervisor`
+  - With nothing, takes the next batch the run has not handed out. It responds with that batch's `batch_id` and its items, or with no batch when every one is taken.
+  - With `batch_id`, responds with every item in your batch: whether each has been taken, the `item_id` it was given when it was taken, and the form it holds now.
+  - With `batch_id` and `item_id`, responds with that one item's form and writes nothing.
+  - With `batch_id`, `item_id` and `action` is how you write. `action:update` writes the section arguments sent on that call onto that item's form and leaves the sign off alone. `action:sign_off` records the sign off, and `note` is where you say what state the item ended in.
+- `standalone_report_plan` takes no arguments. Its response holds the sections this job reports and how far the run has got.
 
-## The phrases
+## Take Your Batch
 
-`escalation`, `support`, `billing`, `tier`. Those four, spelled that way.
+1. Call `standalone_report_supervisor` with no arguments.
+2. Its response holds your `batch_id` and the items in your batch. Those items are yours.
+3. If the response holds no batch, every batch is taken already. Say that in your reply and stop.
+4. If you have no batch of your own and the manager gave you a `batch_id` when it spawned you, that is the batch assigned to you. It sent you back to one it had already handed out, so something in it needs another attempt.
 
-## The standard
+## Spawn Worker
 
-If the standards below are not met, then consider revising the form to meet the standard.
+1. The skill will tell you two things.
+- How many workers you can spawn at once.
+- If this section loops and how.
+2. Call `agent` with the following. Spawn either one at a time, or many, depending on what the skill tells you is allowed.
+- "subagent_type": "worker"
+- "prompt": "Use skill <the skill you were told to use>. Your batch_id is <your batch_id>."
+- "run_in_background": false
+3. Call `standalone_report_supervisor` with your `batch_id`. The skill will tell you the conditions to look for in the response. When the conditions have not been met, loop back to step 2.
 
-- No form fields are blank. "none" is not blank.
-- Check every form field for a worker's excuse rather than an appropriate value. IF there's an excuse then follow it up.
-- Every phrase the form names is one of the four above.
+## Check And Sign Off
 
-## Revise
+1. The skill will tell you three things.
+- The standard an item has to meet.
+- How to revise an item that misses it.
+- If this section loops and how.
+2. Call `standalone_report_supervisor` with your `batch_id` and the `item_id` of an item that is not signed off. It responds with that item's form and writes nothing.
+3. Judge that form against the standard the skill gave you.
+4. If it misses the standard, revise it the way the skill directs, then call `standalone_report_supervisor` with `batch_id`, `item_id`, `action:update`, plus one argument per section you are changing.
+5. Call `standalone_report_supervisor` with `batch_id`, `item_id`, `action:sign_off`, and a `note` saying what state the item ended in. Use the note to say the work is "OK", or to describe any problems, errors, or revisions you made or attempted to make. If you know a specific field is wrong but you could not do anything about it, then say so.
+6. The skill will tell you the conditions to end this loop. When they have not been met, loop back to step 2.
 
-- Check each item against what `freshdesk_get_group` answers, rather than against what its worker said about it. Call `freshdesk_get_group` with that same group's id and read its name and description yourself.
-- Call `standalone_report_supervisor` with `batch_id`, `item_id`, `action:update`, plus one argument per section to be updated.
+## Close
 
-## Signing off
-
-Signing off is your judgment. Sign off a group that meets the standard. Revise a group that misses it, then sign it off.
-- Call `standalone_report_supervisor` with `batch_id`, `item_id`, `action:sign_off`, `note`. Use the note to say the work is "OK", or describe any problems, errors, or revisions you made or attempted to make. If you know a specific field is wrong but you could not do anything about it, then say so. 
-
-## The steps
-*If at any point you get an answer from a spawn then go directly to **step 3**. Then continue with the steps in order, or as directed.*
-
-1. Call `standalone_report_supervisor`. It answers with your batch: the `batch_id`, and the group ids in it.
-2. Spawn one `worker` at a time. Give it your `batch_id`. It knows what to do with it. 
-````json
-{
-  "subagent_type": "worker",
-  "description": "one group",
-  "prompt": "<your batch_id>",
-  "run_in_background": false
-}
-````
-   - It will use the `batch_id` to take the next available item. That is the worker's responsibility.
-   - The spawn does not answer until that worker has finished.
-   - If you came to **step 2** from **step 5**, then skip to **step 6**.
-3. When the spawn answers, it should provide you with its `item_id`. It might also mention any problems it ran into. Consider them when `Signing off`. Call `standalone_report_supervisor` with `batch_id`. Answers with all items in your batch.
-4. If every item in your batch has been read, compared to `The standard` and signed off, then the batch is done. Skip to **step 9**. Else continue
-5. If any of your items have not been taken yet. Then go back to **step 2**. Else continue.
-
-*GATE: you should only be this far if you have gotten at least one answer from one of your spawns. If not, wait for an answer then follow **step 3**.*
-
-6. Using the data you got from **step 3**, pick an item that is not signed-off, and use `The standard` section to determine if the item meets the standards. If it does skip to **step 8**. Else continue.
-7. Use the `Revise` section to update the item.
-8. Use the `Signing off` section to sign-off that item.
-9. You can only get to this step from **step 4**. If you did not then return to **step 3**. *Reply with your own account of the batch.*
-
+1. The skill will tell you what belongs in your reply.
+2. Reply with your own account of the batch.

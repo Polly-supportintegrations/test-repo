@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Every spawn in this repo waits for what it starts, enforced outside the model.
 
-A spawn that is not held to the foreground answers the moment it is made, so the agent that
+A spawn that is not held to the foreground responds the moment it is made, so the agent that
 made it replies and ends before its own worker comes back, and what that worker left is never
 read or signed off. The agent type's `background` field does not reach this decision: the
 definition is only consulted when the harness builds the call, never when an agent writes one.
