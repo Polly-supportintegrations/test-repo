@@ -1,6 +1,6 @@
 ---
 name: worker
-description: Takes an item out of one batch of a run and fills in its form.
+description: Takes an item out of a batch of a run and fills in its form.
 disallowedTools: Agent
 background: false
 ---

@@ -37,7 +37,7 @@ You hand four groups out in two batches, manage batch progress, and close. Closi
 
 ### Your Tools for this skill
 
-`freshdesk_list_groups` takes no arguments and responds with the groups in the workspace.
+- `freshdesk_list_groups` takes no arguments and responds with the groups in the workspace.
 
 ### Create Batches (Not loop)
 

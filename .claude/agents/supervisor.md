@@ -1,6 +1,6 @@
 ---
 name: supervisor
-description: Responsible for one batch of a run, and for checking every item in it.
+description: Takes a batch of a run, has its items worked, and checks each one before signing it off.
 background: false
 ---
 
